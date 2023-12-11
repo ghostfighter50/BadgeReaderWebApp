@@ -60,14 +60,16 @@ cd ./badge-reader-client npm install
 Start the API server:
 
 ```bash
-cd ./badge-reader-api && npm start
+cd ./badge-reader-api
+npm start
 ```
 The API will be accessible at http://localhost:8000 by default.
 
 Start the React App (Client):
 
 ```bash
-cd ./badge-reader-client && npm start
+cd ./badge-reader-client
+npm start
 ```
 
 The React App will be accessible at http://localhost:3000 by default.
