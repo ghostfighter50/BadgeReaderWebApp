@@ -37,11 +37,13 @@ cd badge-reader-web-app
 
 - **API**
 ```bash
-cd ./badge-reader-api npm install
+cd ./badge-reader-api
+npm install
 ```
 - **Client**
 ```bash
-cd ./badge-reader-client npm install
+cd ./badge-reader-client
+npm install
 ```
 
 **4. Configure API:**
