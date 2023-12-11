@@ -23,8 +23,7 @@ export function createWebSocketServer (server: http.Server) {
   })
 
   function isValidOrigin (origin: string | undefined) {
-    // You might want to extract the allowed origin from a configuration file
-    const allowedOrigin = 'http://localhost:3000' // Adjust this to your needs
+    const allowedOrigin = 'http://localhost:3000'
     return origin === allowedOrigin
   }
 

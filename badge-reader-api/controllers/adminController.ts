@@ -17,14 +17,12 @@ export class adminController {
    */
   public static async adminLogin (req: Request, res: Response): Promise<void> {
     try {
-      console.log(req.body)
       if (
         req.body.badgeId === adminCredentials.adminBadgeId &&
         req.body.password === adminCredentials.password
       ) {
         const token = jwt.sign({ isAdmin: true }, jwtConfig.secret, { expiresIn: '1h' })
         res.json({ success: true, message: 'Admin logged in successfully', token })
-        console.log(token)
       } else {
         res.status(401).json({ success: false, message: 'Authentication failed' })
       }
