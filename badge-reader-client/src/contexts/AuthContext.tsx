@@ -7,10 +7,10 @@ import apiConfig from '../config/api.json'
  * @interface AuthContextProps
  */
 interface AuthContextProps {
-  authToken: string | null;
-  loginAdmin: (token: string) => void;
-  logoutAdmin: () => void;
-  checkAuth: () => Promise<boolean | undefined>;
+  authToken: string | null
+  loginAdmin: (token: string) => void
+  logoutAdmin: () => void
+  checkAuth: () => Promise<boolean | undefined>
 }
 
 // Create an authentication context
@@ -23,9 +23,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined)
  * @param {ReactNode} props.children - The children elements that will have access to the authentication context.
  * @returns {JSX.Element} - Rendered React element.
  */
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({
-  children
-}) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // State to manage the authentication token
   const [authToken, setAuthToken] = useState<string | null>(() => {
     return localStorage.getItem('token')
@@ -53,32 +51,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
    */
   const checkAuth = async () => {
     try {
-      const response = await axios.get(
-        `http://${apiConfig.host}:${apiConfig.port}/api/admin/checkAuth`,
-        {
-          headers: {
-            auth: authToken
-          }
+      const response = await axios.get(`http://${apiConfig.host}:${apiConfig.port}/api/admin/checkAuth`, {
+        headers: {
+          auth: authToken
         }
-      )
+      })
 
       return response.data.success
     } catch (error: any) {
-      console.error('Error checking authentication:', error.message)
-
       // Return false if there's an error during the authentication check
       return false
     }
   }
 
   // Provide the authentication context to the children
-  return (
-    <AuthContext.Provider
-      value={{ authToken, loginAdmin, logoutAdmin, checkAuth }}
-    >
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={{ authToken, loginAdmin, logoutAdmin, checkAuth }}>{children}</AuthContext.Provider>
 }
 
 /**

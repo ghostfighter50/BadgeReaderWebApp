@@ -9,6 +9,16 @@ import jwtConfig from '../config/jwt.json'
  */
 export class adminController {
   /**
+   * Handles errors and sends an internal server error response.
+   * @param {Response} res - Express response object.
+   * @param {string} errorMessage - Custom error message.
+   */
+  private static handleServerError (res: Response, errorMessage: string = 'Internal Server Error'): void {
+    console.error(`[X] Error during admin operation: ${errorMessage}`)
+    res.status(500).json({ success: false, message: errorMessage })
+  }
+
+  /**
    * Admin login.
    * @method
    * @static
@@ -17,18 +27,22 @@ export class adminController {
    */
   public static async adminLogin (req: Request, res: Response): Promise<void> {
     try {
-      if (
-        req.body.badgeId === adminCredentials.adminBadgeId &&
-        req.body.password === adminCredentials.password
-      ) {
-        const token = jwt.sign({ isAdmin: true }, jwtConfig.secret, { expiresIn: '1h' })
-        res.json({ success: true, message: 'Admin logged in successfully', token })
+      const { badgeId, password } = req.body
+
+      if (badgeId === adminCredentials.adminBadgeId && password === adminCredentials.password) {
+        const token = jwt.sign({ isAdmin: true }, jwtConfig.secret, {
+          expiresIn: '1h'
+        })
+        res.json({
+          success: true,
+          message: 'Admin logged in successfully',
+          token
+        })
       } else {
         res.status(401).json({ success: false, message: 'Authentication failed' })
       }
     } catch (error: any) {
-      console.error('[X] Error during admin login:', error.message)
-      res.status(500).json({ success: false, message: 'Internal Server Error' })
+      adminController.handleServerError(res, 'Error during admin login')
     }
   }
 
@@ -43,7 +57,7 @@ export class adminController {
     try {
       res.json({ success: true, message: 'Admin is authenticated' })
     } catch (error: any) {
-      res.status(500).json({ success: false, message: 'Admin is not authenticated' })
+      adminController.handleServerError(res, 'Error checking admin authentication')
     }
   }
 }

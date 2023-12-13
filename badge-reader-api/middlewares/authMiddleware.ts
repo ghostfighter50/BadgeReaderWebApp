@@ -3,22 +3,18 @@ import { Request, Response, NextFunction } from 'express'
 import jwtConfig from '../config/jwt.json'
 
 interface IUser {
-  isAdmin?: boolean;
+  isAdmin?: boolean
 }
 
 interface IRequest extends Request {
-  user?: IUser;
+  user?: IUser
 }
 
 /**
  * Middleware to check user authentication using JWT.
  * @returns {void}
  */
-export const isAuthenticated = (
-  req: IRequest,
-  res: Response,
-  next: NextFunction
-): void => {
+export const isAuthenticated = (req: IRequest, res: Response, next: NextFunction): void => {
   const token = req.headers.auth as string | undefined
 
   if (!token) {
@@ -35,8 +31,8 @@ export const isAuthenticated = (
       return next()
     }
 
-    res.status(401).json({ message: 'Unauthorized - User is not an admin' })
+    res.status(401).json({ message: 'User is not an admin' })
   } catch (error: any) {
-    res.status(401).json({ message: 'Unauthorized - Invalid token' })
+    res.status(401).json({ message: 'Invalid token' })
   }
 }

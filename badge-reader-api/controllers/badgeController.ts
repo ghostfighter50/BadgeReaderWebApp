@@ -1,11 +1,21 @@
 import { Request, Response } from 'express'
 import BadgeModel, { IBadge } from '../models/badgeModel'
+import adminCredentials from '../config/admin.json'
 
 /**
  * Controller for handling badge-related operations.
  * @class
  */
 export class badgeController {
+  /**
+   * Handles errors and sends an internal server error response.B
+   * @param {Response} res - Express response object.
+   * @param {string} errorMessage - Custom error message.
+   */
+  private static handleServerError (res: Response, errorMessage: string = 'Internal Server Error'): void {
+    res.status(500).json({ success: false, message: errorMessage })
+  }
+
   /**
    * Get all badges.
    * @method
@@ -16,10 +26,13 @@ export class badgeController {
   public static async getAllBadges (req: Request, res: Response): Promise<void> {
     try {
       const badges = await BadgeModel.find()
-      res.json({ success: true, message: 'Badges retrieved successfully', data: badges })
+      res.json({
+        success: true,
+        message: 'Badges retrieved successfully',
+        data: badges
+      })
     } catch (error: any) {
-      // Handle internal server error
-      res.status(500).json({ success: false, message: 'Internal Server Error' })
+      badgeController.handleServerError(res, 'Error retrieving badges')
     }
   }
 
@@ -35,14 +48,16 @@ export class badgeController {
     try {
       const badge = await BadgeModel.findOne({ badgeId: id })
       if (badge) {
-        res.json({ success: true, message: 'Badge retrieved successfully', data: badge })
+        res.json({
+          success: true,
+          message: 'Badge retrieved successfully',
+          data: badge
+        })
       } else {
-        // Handle badge not found
         res.status(404).json({ success: false, message: 'Badge not found' })
       }
     } catch (error: any) {
-      // Handle internal server error
-      res.status(500).json({ success: false, message: 'Internal Server Error' })
+      badgeController.handleServerError(res, `Error retrieving badge with ID: ${id}`)
     }
   }
 
@@ -60,7 +75,10 @@ export class badgeController {
       const existingBadge = await BadgeModel.findOne({ badgeId })
 
       if (existingBadge) {
-        res.status(400).json({ success: false, message: 'Badge with the given ID already exists' })
+        res.status(400).json({
+          success: false,
+          message: 'Badge with the given ID already exists'
+        })
         return
       }
 
@@ -72,9 +90,13 @@ export class badgeController {
       } as IBadge)
 
       const createdBadge = await newBadge.save()
-      res.status(201).json({ success: true, message: 'Badge created successfully', data: createdBadge })
+      res.status(201).json({
+        success: true,
+        message: 'Badge created successfully',
+        data: createdBadge
+      })
     } catch (error: any) {
-      res.status(500).json({ success: false, message: 'Internal Server Error' })
+      badgeController.handleServerError(res, 'Error creating badge')
     }
   }
 
@@ -87,11 +109,10 @@ export class badgeController {
    */
   public static async deleteAllBadges (req: Request, res: Response): Promise<void> {
     try {
-      await BadgeModel.deleteMany({})
+      await BadgeModel.deleteMany({ isAdmin: false })
       res.json({ success: true, message: 'All badges deleted successfully' })
     } catch (error: any) {
-      // Handle internal server error
-      res.status(500).json({ success: false, message: 'Internal Server Error' })
+      badgeController.handleServerError(res, 'Error deleting all badges')
     }
   }
 
@@ -106,15 +127,18 @@ export class badgeController {
     const { id } = req.params
     try {
       const deletedBadge = await BadgeModel.findOneAndDelete({ badgeId: id })
-      if (deletedBadge) {
+      if (deletedBadge?.badgeId === adminCredentials.adminBadgeId) {
+        res.json({
+          success: false,
+          message: 'Cannot delete the administrator account'
+        })
+      } else if (deletedBadge) {
         res.json({ success: true, message: 'Badge deleted successfully' })
       } else {
-        // Handle badge not found
         res.status(404).json({ success: false, message: 'Badge not found' })
       }
     } catch (error: any) {
-      // Handle internal server error
-      res.status(500).json({ success: false, message: 'Internal Server Error' })
+      badgeController.handleServerError(res, `Error deleting badge with ID: ${id}`)
     }
   }
 
@@ -131,15 +155,17 @@ export class badgeController {
     try {
       const badge: any = await BadgeModel.findOne({ badgeId: id })
       if (!badge) {
-        // Handle badge not found
         res.status(404).json({ success: false, message: 'Badge not found' })
       }
       badge.name = name
       const updatedBadge = await badge.save()
-      res.json({ success: true, message: 'Badge modified successfully', data: updatedBadge })
+      res.json({
+        success: true,
+        message: 'Badge modified successfully',
+        data: updatedBadge
+      })
     } catch (error: any) {
-      // Handle internal server error
-      res.status(500).json({ success: false, message: 'Internal Server Error' })
+      badgeController.handleServerError(res, `Error modifying badge with ID: ${id}`)
     }
   }
 }

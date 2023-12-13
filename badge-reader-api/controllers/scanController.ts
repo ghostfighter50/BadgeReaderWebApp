@@ -10,6 +10,17 @@ import adminCredentials from '../config/admin.json'
  */
 export class scanController {
   /**
+   * Handles errors and sends an appropriate response.
+   * @param {Response} res - Express response object.
+   * @param {number} statusCode - HTTP status code.
+   * @param {string} errorMessage - Custom error message.
+   */
+  private static handleServerError (res: Response, statusCode: number, errorMessage: string): void {
+    console.error(`[X] Error during badge scanning: ${errorMessage}`)
+    res.status(statusCode).json({ success: false, message: errorMessage })
+  }
+
+  /**
    * Scan a badge by ID.
    * @method
    * @static
@@ -22,45 +33,80 @@ export class scanController {
     try {
       // Check if the badge ID is empty
       if (!id) {
-        res.status(400).json({ success: false, message: 'Badge ID is required.' })
+        scanController.handleServerError(res, 400, 'Badge ID is required.')
         return
       }
 
-      const scannedBadge = await BadgeModel.findOneAndUpdate(
-        { badgeId: id },
-        { lastScanned: new Date(), isScanned: true },
-        { new: true }
-      )
+      const scannedBadge = await BadgeModel.findOne({ badgeId: id })
 
       // Check if the badge ID matches the admin badge ID
       if (id === adminCredentials.adminBadgeId) {
-        wss.clients.forEach((client) => {
-          if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify({ type: 'adminBadgeScanned', data: scannedBadge, success: true }))
-          }
-        })
-        res.json({ success: true, message: 'Badge scanned successfully' })
-        return
-      }
+        const messageType = scannedBadge ? 'adminBadgeScanned' : 'badgeScanned'
+        const responseData = {
+          type: messageType,
+          data: scannedBadge,
+          success: !!scannedBadge
+        }
 
-      if (scannedBadge) {
         wss.clients.forEach((client) => {
           if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify({ type: 'badgeScanned', data: scannedBadge, success: true }))
+            client.send(JSON.stringify(responseData))
           }
         })
-        res.json({ success: true, message: 'Badge scanned successfully' })
+
+        // Toggle the isScanned property
+        if (scannedBadge) {
+          scannedBadge.isScanned = !scannedBadge.isScanned
+          scannedBadge.lastScanned = new Date()
+          await scannedBadge.save()
+        }
+
+        res.json({
+          success: true,
+          message: 'Badge scanned successfully',
+          data: scannedBadge
+        })
       } else {
-        wss.clients.forEach((client) => {
-          if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify({ type: 'badgeScanned', data: {}, success: false }))
+        if (scannedBadge) {
+          scannedBadge.isScanned = !scannedBadge.isScanned
+          scannedBadge.lastScanned = new Date()
+          await scannedBadge.save()
+
+          const responseData = {
+            type: 'badgeScanned',
+            data: scannedBadge,
+            success: true
           }
-        })
-        res.status(404).json({ success: false, message: 'Badge not found' })
+
+          wss.clients.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+              client.send(JSON.stringify(responseData))
+            }
+          })
+
+          res.json({
+            success: true,
+            message: 'Badge scanned successfully',
+            data: scannedBadge
+          })
+        } else {
+          const responseData = {
+            type: 'badgeScanned',
+            data: {},
+            success: false
+          }
+
+          wss.clients.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+              client.send(JSON.stringify(responseData))
+            }
+          })
+
+          scanController.handleServerError(res, 404, 'Badge not found')
+        }
       }
     } catch (error: any) {
-      console.error(error)
-      res.status(error.statusCode || 500).json({ success: false, message: error.message })
+      scanController.handleServerError(res, error.statusCode || 500, error.message)
     }
   }
 }

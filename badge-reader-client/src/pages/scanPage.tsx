@@ -12,13 +12,12 @@ import api from '../config/api.json'
  * @returns {JSX.Element} JSX.Element
  */
 const ScanPage: React.FC = () => {
-  // State variables
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [adminPassword, setAdminPassword] = useState('')
   const [scannedBadge, setScannedBadge] = useState<any | null>(null)
   const [accessStatus, setAccessStatus] = useState<boolean | null>(null)
+  const [errorAlert, setErrorAlert] = useState<string | null>(null)
 
-  // Auth context and navigation hooks
   const { loginAdmin } = useAuth()
   const navigate = useNavigate()
 
@@ -30,7 +29,6 @@ const ScanPage: React.FC = () => {
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data)
-
       if (data.type === 'adminBadgeScanned') {
         setScannedBadge(data.data)
         setModalIsOpen(true)
@@ -53,63 +51,61 @@ const ScanPage: React.FC = () => {
     try {
       setModalIsOpen(false)
 
-      const response = await axios.post(
-        `http://${api.host}:${api.port}/api/admin`,
-        {
-          badgeId: scannedBadge.badgeId,
-          password: adminPassword
-        }
-      )
+      const response = await axios.post(`http://${api.host}:${api.port}/api/admin`, {
+        badgeId: scannedBadge.badgeId,
+        password: adminPassword
+      })
 
       if (response.data.success) {
-        console.log(response.data)
         loginAdmin(response.data.token)
         navigate('/admin')
       } else {
         setAccessStatus(false)
+        setErrorAlert('Authentication failed. Please check your password.')
       }
     } catch (error: any) {
       console.error('Error in admin authentication:', error.message)
+      if (error.response && error.response.status === 401) {
+        setErrorAlert('Authentication failed. Incorrect password.')
+      } else {
+        setErrorAlert('An error occurred during authentication.')
+      }
     }
   }
 
   return (
-    <div className="container mt-5">
+    <div className='container mt-5'>
+      <div className='container mt-5'>
+        <h1>Welcome to the Badge Scanner App</h1>
+        <p>This is a simple application for badge scanning and admin authentication.</p>
+      </div>
       {accessStatus === true && <AccessGranted />}
       {accessStatus === false && <AccessDenied />}
 
+      {/* Bootstrap 5 alert for error messages */}
+      {errorAlert && (
+        <div className='alert alert-danger alert-dismissible fade show' role='alert'>
+          {errorAlert}
+          <button type='button' className='btn-close' onClick={() => setErrorAlert(null)} aria-label='Close'></button>
+        </div>
+      )}
+
       {/* Modal for admin password input */}
-      <div
-        className={`modal fade ${modalIsOpen ? 'show' : ''}`}
-        style={{ display: modalIsOpen ? 'block' : 'none' }}
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Admin Password </h5>
-              <button
-                type="button"
-                className="btn-close"
-                onClick={() => setModalIsOpen(false)}
-              ></button>
+      <div className={`modal fade ${modalIsOpen ? 'show' : ''}`} style={{ display: modalIsOpen ? 'block' : 'none' }}>
+        <div className='modal-dialog'>
+          <div className='modal-content'>
+            <div className='modal-header'>
+              <h5 className='modal-title'>Admin Password </h5>
+              <button type='button' className='btn-close' onClick={() => setModalIsOpen(false)}></button>
             </div>
-            <div className="modal-body">
+            <div className='modal-body'>
               <label>
                 Password:
-                <input
-                  type="password"
-                  value={adminPassword}
-                  onChange={(e) => setAdminPassword(e.target.value)}
-                  className="form-control"
-                />
+                <input type='password' value={adminPassword} onChange={(e) => setAdminPassword(e.target.value)} className='form-control' />
               </label>
             </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleAdminPasswordSubmit}
-              >
+            <div className='modal-footer'>
+              <button type='button' className='btn btn-primary' onClick={handleAdminPasswordSubmit}>
                 Submit
               </button>
             </div>

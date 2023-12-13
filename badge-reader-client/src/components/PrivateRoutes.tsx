@@ -23,10 +23,8 @@ const PrivateRoutes = () => {
   if (authStatus === undefined) {
     return <Loading />
   }
-  if (authStatus === false) {
-    return <div>Wrong Password !</div>
-  }
-  return authStatus ? <Outlet /> : <Navigate to="/" />
+
+  return authStatus ? <Outlet /> : <Navigate to='/' />
 }
 
 export default PrivateRoutes

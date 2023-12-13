@@ -1,7 +1,7 @@
 import WebSocket from 'ws'
 import http from 'http'
 
-export function createWebSocketServer (server: http.Server) {
+export function createWebSocketServer(server: http.Server) {
   const wss = new WebSocket.Server({ server })
 
   // WebSocket connection handling
@@ -22,7 +22,7 @@ export function createWebSocketServer (server: http.Server) {
     }
   })
 
-  function isValidOrigin (origin: string | undefined) {
+  function isValidOrigin(origin: string | undefined) {
     const allowedOrigin = 'http://localhost:3000'
     return origin === allowedOrigin
   }

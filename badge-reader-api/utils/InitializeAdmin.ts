@@ -3,14 +3,17 @@ import adminCredentials from '../config/admin.json'
 
 export const initializeAdmin = async () => {
   try {
-    const existingAdmin = await AdminModel.findOne({ badgeId: adminCredentials.adminBadgeId })
+    const existingAdmin = await AdminModel.findOne({
+      badgeId: adminCredentials.adminBadgeId
+    })
 
     if (!existingAdmin) {
       const newAdmin = new AdminModel({
         badgeId: adminCredentials.adminBadgeId,
         name: 'admin',
         lastScanned: null,
-        isScanned: false
+        isScanned: false,
+        isAdmin: true
       })
 
       await newAdmin.save()

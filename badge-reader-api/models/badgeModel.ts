@@ -6,10 +6,11 @@ import mongoose, { Schema, Document, Model } from 'mongoose'
  * @extends Document
  */
 export interface IBadge extends Document {
-  badgeId: string;
-  name: string;
-  lastScanned: Date | null;
-  isScanned: boolean;
+  badgeId: string
+  name: string
+  lastScanned: Date | null
+  isScanned: boolean
+  isAdmin: boolean
 }
 
 /**
@@ -20,7 +21,8 @@ const badgeSchema = new Schema<IBadge>({
   badgeId: { type: String, required: true },
   name: { type: String, required: true },
   lastScanned: { type: Date, default: null },
-  isScanned: { type: Boolean, default: false }
+  isScanned: { type: Boolean, default: false },
+  isAdmin: { type: Boolean, default: false }
 })
 
 /**
