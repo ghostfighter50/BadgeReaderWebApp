@@ -1,4 +1,3 @@
-// index.ts
 import express from 'express'
 import mongoose from 'mongoose'
 import http from 'http'
@@ -18,10 +17,10 @@ import { createWebSocketServer } from './utils/WebSocketServer'
 const app = express()
 
 /**
- * HTTP server instance created using Express app
+ * http server instance created using Express app
  * @type {http.Server}
  */
-const server = http.createServer(app)
+const server = http.createServer(app) // Use 'http.createServer' instead
 
 // Connect to the MongoDB database
 mongoose.connect(databaseConfig.url)
@@ -37,7 +36,7 @@ app.use(
 )
 
 /**
- * WebSocket server instance created using HTTP server
+ * WebSocket server instance created using http server
  * @type {WebSocket.Server}
  */
 const wss = createWebSocketServer(server)

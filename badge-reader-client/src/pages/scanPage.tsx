@@ -6,11 +6,6 @@ import { useAuth } from '../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import api from '../config/api.json'
 
-/**
- * ScanPage component for handling badge scanning and admin authentication.
- * @component
- * @returns {JSX.Element} JSX.Element
- */
 const ScanPage: React.FC = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [adminPassword, setAdminPassword] = useState('')
@@ -21,9 +16,6 @@ const ScanPage: React.FC = () => {
   const { loginAdmin } = useAuth()
   const navigate = useNavigate()
 
-  /**
-   * Effect hook for setting up WebSocket connection.
-   */
   useEffect(() => {
     const ws = new WebSocket(`ws://${api.host}:${api.port}`)
 
@@ -43,10 +35,6 @@ const ScanPage: React.FC = () => {
     }
   }, [])
 
-  /**
-   * Handles admin password submission.
-   * @async
-   */
   const handleAdminPasswordSubmit = async () => {
     try {
       setModalIsOpen(false)
@@ -95,14 +83,39 @@ const ScanPage: React.FC = () => {
         <div className='modal-dialog'>
           <div className='modal-content'>
             <div className='modal-header'>
-              <h5 className='modal-title'>Admin Password </h5>
+              <h5 className='modal-title'>Admin Password</h5>
               <button type='button' className='btn-close' onClick={() => setModalIsOpen(false)}></button>
             </div>
             <div className='modal-body'>
-              <label>
-                Password:
-                <input type='password' value={adminPassword} onChange={(e) => setAdminPassword(e.target.value)} className='form-control' />
-              </label>
+              <form>
+                {/* Optional hidden username field for accessibility */}
+                <div className='form-group visually-hidden'>
+                  <label htmlFor='adminUsername'>Username:</label>
+                  <input
+                    type='text'
+                    id='adminUsername'
+                    name='adminUsername'
+                    value='hidden-username'
+                    readOnly
+                    className='form-control'
+                  />
+                </div>
+
+                <div className='form-group'>
+                  <label htmlFor='adminPassword'>
+                    Password:
+                    <input
+                      type='password'
+                      id='adminPassword'
+                      name='adminPassword'
+                      value={adminPassword}
+                      onChange={(e) => setAdminPassword(e.target.value)}
+                      className='form-control'
+                      autoComplete='new-password'
+                    />
+                  </label>
+                </div>
+              </form>
             </div>
             <div className='modal-footer'>
               <button type='button' className='btn btn-primary' onClick={handleAdminPasswordSubmit}>

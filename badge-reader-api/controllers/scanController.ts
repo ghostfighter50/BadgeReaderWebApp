@@ -29,7 +29,7 @@ export class scanController {
    */
   static async scanBadge (req: Request, res: Response): Promise<void> {
     const { id } = req.params
-
+    console.log(id)
     try {
       // Check if the badge ID is empty
       if (!id) {
@@ -54,7 +54,6 @@ export class scanController {
           }
         })
 
-        // Toggle the isScanned property
         if (scannedBadge) {
           scannedBadge.isScanned = !scannedBadge.isScanned
           scannedBadge.lastScanned = new Date()

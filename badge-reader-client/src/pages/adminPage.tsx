@@ -3,7 +3,6 @@ import { BadgeService } from '../services/badgeService'
 import { ScanService } from '../services/scanService'
 import { useAuth } from '../contexts/AuthContext'
 import { Loading } from '../components/Loading'
-
 /**
  * Interface for representing a Badge.
  */
@@ -248,13 +247,26 @@ const AdminPanel: React.FC = () => {
                     <td>{badge.isScanned ? 'Yes' : 'No'}</td>
                     <td>
                       {/* Action buttons for each badge */}
-                      <button className='btn btn-warning btn-sm me-2' onClick={() => { handleScanBadge(badge.badgeId) }} disabled={loading}>
+                      <button
+                        className='btn btn-warning btn-sm me-2'
+                        onClick={() => {
+                          handleScanBadge(badge.badgeId)
+                        }}
+                        disabled={loading}
+                      >
                         Scan
                       </button>
                       <button className='btn btn-info btn-sm me-2' onClick={() => handleOpenRenameModal(badge.badgeId)} disabled={loading}>
                         Rename
                       </button>
-                      <button className='btn btn-danger btn-sm' onClick={() => { setDeleteBadgeId(badge.badgeId); deleteModalRef.current!.style.display = 'block' }} disabled={loading}>
+                      <button
+                        className='btn btn-danger btn-sm'
+                        onClick={() => {
+                          setDeleteBadgeId(badge.badgeId)
+                          deleteModalRef.current!.style.display = 'block'
+                        }}
+                        disabled={loading}
+                      >
                         Delete
                       </button>
                     </td>
