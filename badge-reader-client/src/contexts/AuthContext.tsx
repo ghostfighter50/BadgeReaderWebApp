@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
    */
   const checkAuth = async () => {
     try {
-      const response = await axios.get(`http://${apiConfig.host}:${apiConfig.port}/api/admin/checkAuth`, {
+      const response = await axios.get(`https://${apiConfig.host}:${apiConfig.port}/api/admin/checkAuth`, {
         headers: {
           auth: authToken
         }

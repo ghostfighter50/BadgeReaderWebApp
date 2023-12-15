@@ -17,7 +17,7 @@ const ScanPage: React.FC = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const ws = new WebSocket(`ws://${api.host}:${api.port}`)
+    const ws = new WebSocket(`wss://${api.host}:${api.port}`)
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data)
@@ -39,7 +39,7 @@ const ScanPage: React.FC = () => {
     try {
       setModalIsOpen(false)
 
-      const response = await axios.post(`http://${api.host}:${api.port}/api/admin`, {
+      const response = await axios.post(`https://${api.host}:${api.port}/api/admin`, {
         badgeId: scannedBadge.badgeId,
         password: adminPassword
       })

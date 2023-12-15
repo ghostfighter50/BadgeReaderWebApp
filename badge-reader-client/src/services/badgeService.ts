@@ -30,7 +30,7 @@ export class BadgeService {
 
   async getAllBadges (): Promise<any[]> {
     try {
-      const response: AxiosResponse<any> = await axios.get(`http://${apiConfig.host}:${apiConfig.port}/api/badges`, {
+      const response: AxiosResponse<any> = await axios.get(`https://${apiConfig.host}:${apiConfig.port}/api/badges`, {
         headers: this.getHeaders()
       })
       return response.data.data
@@ -43,7 +43,7 @@ export class BadgeService {
   async getBadgeById (badgeId: string): Promise<Badge> {
     try {
       const response: AxiosResponse<Badge> = await axios.get(
-        `http://${apiConfig.host}:${apiConfig.port}/api/badges/${badgeId}`,
+        `https://${apiConfig.host}:${apiConfig.port}/api/badges/${badgeId}`,
         {
           headers: this.getHeaders()
         }
@@ -58,7 +58,7 @@ export class BadgeService {
   async createBadge (badgeData: any): Promise<Badge> {
     try {
       const response: AxiosResponse<any> = await axios.post(
-        `http://${apiConfig.host}:${apiConfig.port}/api/badges`,
+        `https://${apiConfig.host}:${apiConfig.port}/api/badges`,
         badgeData,
         {
           headers: this.getHeaders()
@@ -74,7 +74,7 @@ export class BadgeService {
   async modifyBadge (badgeId: string, updatedBadgeData: Partial<any>): Promise<any> {
     try {
       const response: AxiosResponse<any> = await axios.put(
-        `http://${apiConfig.host}:${apiConfig.port}/api/badges/${badgeId}`,
+        `https://${apiConfig.host}:${apiConfig.port}/api/badges/${badgeId}`,
         updatedBadgeData,
         {
           headers: this.getHeaders()
@@ -89,7 +89,7 @@ export class BadgeService {
 
   async deleteBadge (badgeId: string): Promise<void> {
     try {
-      await axios.delete(`http://${apiConfig.host}:${apiConfig.port}/api/badges/${badgeId}`, {
+      await axios.delete(`https://${apiConfig.host}:${apiConfig.port}/api/badges/${badgeId}`, {
         headers: this.getHeaders()
       })
     } catch (error: any) {
@@ -100,7 +100,7 @@ export class BadgeService {
 
   async deleteAllBadges (): Promise<void> {
     try {
-      await axios.delete(`http://${apiConfig.host}:${apiConfig.port}/api/badges`, {
+      await axios.delete(`https://${apiConfig.host}:${apiConfig.port}/api/badges`, {
         headers: this.getHeaders()
       })
     } catch (error: any) {

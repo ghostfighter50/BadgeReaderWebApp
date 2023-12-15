@@ -29,7 +29,6 @@ export class scanController {
    */
   static async scanBadge (req: Request, res: Response): Promise<void> {
     const { id } = req.params
-    console.log(id)
     try {
       // Check if the badge ID is empty
       if (!id) {

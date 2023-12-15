@@ -65,7 +65,7 @@ Start the API server:
 cd ./badge-reader-api
 npm start
 ```
-The API will be accessible at http://localhost:8000 by default.
+The API will be accessible at https://localhost:8000 by default.
 
 Start the React App (Client):
 
@@ -74,7 +74,7 @@ cd ./badge-reader-client
 npm start
 ```
 
-The React App will be accessible at http://localhost:3000 by default.
+The React App will be accessible at https://localhost:3000 by default.
 
 Now everything sould be running correctly
 

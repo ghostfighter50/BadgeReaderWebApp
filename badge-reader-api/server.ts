@@ -1,7 +1,8 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import http from 'http'
+import https from 'https'
 import cors from 'cors'
+import fs from 'fs'
 import badgeRoutes from './routes/badgeRoute'
 import scanRoutes from './routes/scanRoute'
 import adminRoutes from './routes/adminRoute'
@@ -17,10 +18,17 @@ import { createWebSocketServer } from './utils/WebSocketServer'
 const app = express()
 
 /**
- * http server instance created using Express app
- * @type {http.Server}
+* SSL config
+*/
+const options = {
+  key: fs.readFileSync('../certificates/localhost-key.pem'),
+  cert: fs.readFileSync('../certificates/localhost.pem')
+}
+/**
+ * https server instance created using Express app
+ * @type {https.Server}
  */
-const server = http.createServer(app) // Use 'http.createServer' instead
+const server = https.createServer(options, app) // Use 'https.createServer' instead
 
 // Connect to the MongoDB database
 mongoose.connect(databaseConfig.url)
@@ -30,13 +38,13 @@ app.use(express.json())
 
 app.use(
   cors({
-    origin: `http://${clientConfig.host}:${clientConfig.port}`,
+    origin: `https://${clientConfig.host}:${clientConfig.port}`,
     credentials: true
   })
 )
 
 /**
- * WebSocket server instance created using http server
+ * WebSocket server instance created using https server
  * @type {WebSocket.Server}
  */
 const wss = createWebSocketServer(server)

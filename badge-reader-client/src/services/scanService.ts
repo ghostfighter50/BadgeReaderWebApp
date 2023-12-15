@@ -12,7 +12,7 @@ export class ScanService {
   async scanBadge (badgeId: string): Promise<any> {
     try {
       const response: AxiosResponse<any> = await axios.get(
-        `http://${apiConfig.host}:${apiConfig.port}/api/scan/${badgeId}`
+        `https://${apiConfig.host}:${apiConfig.port}/api/scan/${badgeId}`
       )
       return response.data.data
     } catch (error: any) {
