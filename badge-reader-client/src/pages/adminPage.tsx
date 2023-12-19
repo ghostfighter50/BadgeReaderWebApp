@@ -219,9 +219,10 @@ const AdminPanel: React.FC = () => {
           )
         : badges.length === 1
           ? (
-        <p>No badges available.</p>
+        <span className='nobadges'><b>No badges available.</b></span>
             )
           : (
+        <div className='badgelist'>
         <table className='table mt-3'>
           <thead>
             <tr>
@@ -275,11 +276,13 @@ const AdminPanel: React.FC = () => {
             )}
           </tbody>
         </table>
+        </div>
             )}
+
       {/* Create Badge Modal */}
       <div className='modal' tabIndex={-1} role='dialog' ref={createModalRef} style={{ display: 'none' }}>
         <div className='modal-dialog' role='document'>
-          <div className='modal-content'>
+          <div className='modal-content bg-dark text-white'>
             <div className='modal-header'>
               <h5 className='modal-title' id='createModalLabel'>
                 Create Badge
@@ -318,7 +321,7 @@ const AdminPanel: React.FC = () => {
       {/* Delete All Badges Modal */}
       <div className='modal' tabIndex={-1} role='dialog' ref={deleteAllModalRef} style={{ display: 'none' }}>
         <div className='modal-dialog' role='document'>
-          <div className='modal-content'>
+          <div className='modal-content bg-dark text-white'>
             <div className='modal-header'>
               <h5 className='modal-title' id='deleteAllModalLabel'>
                 Delete All Badges
@@ -344,7 +347,7 @@ const AdminPanel: React.FC = () => {
       {/* Delete Badge Modal */}
       <div className='modal' tabIndex={-1} role='dialog' ref={deleteModalRef} style={{ display: 'none' }}>
         <div className='modal-dialog' role='document'>
-          <div className='modal-content'>
+          <div className='modal-content bg-dark text-white'>
             <div className='modal-header'>
               <h5 className='modal-title' id='deleteModalLabel'>
                 Delete Badge
@@ -370,7 +373,7 @@ const AdminPanel: React.FC = () => {
       {/* Rename Badge Modal */}
       <div className='modal' tabIndex={-1} role='dialog' ref={renameModalRef} style={{ display: 'none' }}>
         <div className='modal-dialog' role='document'>
-          <div className='modal-content'>
+          <div className='modal-content bg-dark text-white'>
             <div className='modal-header'>
               <h5 className='modal-title' id='renameModalLabel'>
                 Rename Badge

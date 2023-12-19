@@ -18,8 +18,8 @@ import { createWebSocketServer } from './utils/WebSocketServer'
 const app = express()
 
 /**
-* SSL config
-*/
+ * SSL config
+ */
 const options = {
   key: fs.readFileSync('../certificates/localhost-key.pem'),
   cert: fs.readFileSync('../certificates/localhost.pem')

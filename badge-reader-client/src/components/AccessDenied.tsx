@@ -2,6 +2,8 @@ import React from 'react'
 
 export const AccessDenied: React.FC = () => (
   <div>
-    <h2>Access Denied</h2>
+    <h1 className='text statusdenied'>
+      <span></span>
+    </h1>
   </div>
 )

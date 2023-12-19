@@ -63,10 +63,9 @@ const ScanPage: React.FC = () => {
 
   return (
     <div className='container mt-5'>
-      <div className='container mt-5'>
-        <h1>Welcome to the Badge Scanner App</h1>
-        <p>This is a simple application for badge scanning and admin authentication.</p>
-      </div>
+      <h1 className='text-white scan'>
+        Please scan your badge.
+      </h1>
       {accessStatus === true && <AccessGranted />}
       {accessStatus === false && <AccessDenied />}
 
@@ -81,7 +80,7 @@ const ScanPage: React.FC = () => {
       {/* Modal for admin password input */}
       <div className={`modal fade ${modalIsOpen ? 'show' : ''}`} style={{ display: modalIsOpen ? 'block' : 'none' }}>
         <div className='modal-dialog'>
-          <div className='modal-content'>
+          <div className='modal-content bg-dark text-white'>
             <div className='modal-header'>
               <h5 className='modal-title'>Admin Password</h5>
               <button type='button' className='btn-close' onClick={() => setModalIsOpen(false)}></button>
@@ -91,28 +90,13 @@ const ScanPage: React.FC = () => {
                 {/* Optional hidden username field for accessibility */}
                 <div className='form-group visually-hidden'>
                   <label htmlFor='adminUsername'>Username:</label>
-                  <input
-                    type='text'
-                    id='adminUsername'
-                    name='adminUsername'
-                    value='hidden-username'
-                    readOnly
-                    className='form-control'
-                  />
+                  <input type='text' id='adminUsername' name='adminUsername' value='hidden-username' readOnly className='form-control' />
                 </div>
 
                 <div className='form-group'>
                   <label htmlFor='adminPassword'>
                     Password:
-                    <input
-                      type='password'
-                      id='adminPassword'
-                      name='adminPassword'
-                      value={adminPassword}
-                      onChange={(e) => setAdminPassword(e.target.value)}
-                      className='form-control'
-                      autoComplete='new-password'
-                    />
+                    <input type='password' id='adminPassword' name='adminPassword' value={adminPassword} onChange={(e) => setAdminPassword(e.target.value)} className='form-control' autoComplete='new-password' />
                   </label>
                 </div>
               </form>

@@ -18,7 +18,7 @@ export const isAuthenticated = (req: IRequest, res: Response, next: NextFunction
   const token = req.headers.auth as string | undefined
 
   if (!token) {
-    res.status(401).json({ message: 'Unauthorized - Token not provided' })
+    res.status(401).json({ message: 'Token not provided' })
     return
   }
 

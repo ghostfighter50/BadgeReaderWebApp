@@ -28,7 +28,6 @@ export class adminController {
   public static async adminLogin (req: Request, res: Response): Promise<void> {
     try {
       const { badgeId, password } = req.body
-      console.log(badgeId, password)
       if (badgeId === adminCredentials.adminBadgeId && password === adminCredentials.password) {
         const token = jwt.sign({ isAdmin: true }, jwtConfig.secret, {
           expiresIn: '1h'

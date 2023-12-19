@@ -5,13 +5,18 @@ import AdminPage from './pages/adminPage'
 import PrivateRoutes from './components/PrivateRoutes'
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
+import './App.css'
+
+const rootStyle = {
+  height: '100%'
+}
 
 /**
  * Main application component.
  */
 const App: React.FC = () => {
   return (
-    <div className='App'>
+    <div className='App' style={rootStyle}>
       <Router>
         <Routes>
           {/* PrivateRoutes component contains routes that require authentication. */}

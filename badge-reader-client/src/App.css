@@ -1,39 +1,147 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background: rgb(185, 181, 181);
 }
 
-.App-link {
-  color: #61dafb;
+.loading::after {
+  content: '';
+  width: 75px;
+  height: 75px;
+  border: 15px solid rgb(255, 255, 255);
+  border-top-color: #1d1d1f;
+  border-radius: 50%;
+  animation: loading 0.75s ease infinite;
 }
 
-@keyframes App-logo-spin {
+@keyframes loading {
   from {
-    transform: rotate(0deg);
+    transform: rotate(0turn);
   }
-
   to {
-    transform: rotate(360deg);
+    transform: rotate(1turn);
   }
+}
+
+nav {
+  background-color: #1d1d1f;
+}
+
+nav .favicon {
+  height: 20px;
+  width: 20px;
+  margin-right: 5px;
+}
+
+div .sidebar {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+}
+footer {
+  border-top: 5px solid gray;
+  background-color: #1d1d1f;
+  color: lightgray;
+  padding: 30px 100px;
+}
+.App {
+    display: flex;
+    flex-direction: column;
+}
+footer h2 {
+  padding-bottom: 10px;
+  border-bottom: 1px solid white;
+  width:100%;
+}
+
+footer .services {
+  display: flex;
+}
+
+footer .services .service {
+  margin-right: 30px;
+  padding: 10px;
+}
+
+footer .contact {
+  color: gray;
+}
+
+footer div .service {
+  width: 500px;
+}
+
+.servicee {
+  margin-left: 400px;
+  margin-top: 10px;
+}
+.statusgranted::before,
+.statusgranted::after {
+  content: 'Access Granted';
+  background: radial-gradient(rgb(6, 98, 55), #1d1d1f);
+  color: white;
+  border-radius: 10px;
+  font-size: 35px;
+  position: absolute;
+  padding: 31px;
+  text-transform: uppercase;
+  font-weight: bold;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  border: 5px solid #1d1d1f;
+}
+.statusdenied::before,
+.statusdenied::after {
+  content: 'Access Denied';
+  background: rgb(119, 0, 0);
+  color: #1d1d1f;
+  border-radius: 10px;
+  font-size: 35px;
+  position: absolute;
+  padding: 31px;
+  text-transform: uppercase;
+  font-weight: bold;
+  -webkit-text-fill-color: #1d1d1f;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+}
+
+.statusdenied::before {
+  content: '';
+  padding: 70px 190px;
+  background: repeating-linear-gradient(45deg, rgb(119, 0, 0), rgb(119, 0, 0) 10px, #1d1d1f 10px, #1d1d1f 20px);
+  box-shadow: 0 0 10px #1d1d1f;
+}
+.scan {
+    height: 200px;
+    background-color: #565681;
+    margin-top: 50px;
+    margin-bottom: 58px;
+    margin-left: 300px; 
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20;
+    width: 50%;
+    border: 4px solid #1d1d1f;
+}
+.badgelist {
+    margin-bottom: 167px;
+} 
+
+.nobadges {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 76px;
+    padding-top: 100px;
+    font-size: xx-large;
 }

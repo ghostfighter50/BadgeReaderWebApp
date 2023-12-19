@@ -12,11 +12,11 @@ interface Badge {
 export class BadgeService {
   private authToken: string | null
 
-  constructor () {
+  constructor() {
     this.authToken = localStorage.getItem('token')
   }
 
-  private getHeaders () {
+  private getHeaders() {
     const headers: { [key: string]: string } = {
       'Content-Type': 'application/json'
     }
@@ -28,7 +28,7 @@ export class BadgeService {
     return headers
   }
 
-  async getAllBadges (): Promise<any[]> {
+  async getAllBadges(): Promise<any[]> {
     try {
       const response: AxiosResponse<any> = await axios.get(`https://${apiConfig.host}:${apiConfig.port}/api/badges`, {
         headers: this.getHeaders()
@@ -40,7 +40,7 @@ export class BadgeService {
     }
   }
 
-  async getBadgeById (badgeId: string): Promise<Badge> {
+  async getBadgeById(badgeId: string): Promise<Badge> {
     try {
       const response: AxiosResponse<Badge> = await axios.get(
         `https://${apiConfig.host}:${apiConfig.port}/api/badges/${badgeId}`,
@@ -55,7 +55,7 @@ export class BadgeService {
     }
   }
 
-  async createBadge (badgeData: any): Promise<Badge> {
+  async createBadge(badgeData: any): Promise<Badge> {
     try {
       const response: AxiosResponse<any> = await axios.post(
         `https://${apiConfig.host}:${apiConfig.port}/api/badges`,
@@ -71,7 +71,7 @@ export class BadgeService {
     }
   }
 
-  async modifyBadge (badgeId: string, updatedBadgeData: Partial<any>): Promise<any> {
+  async modifyBadge(badgeId: string, updatedBadgeData: Partial<any>): Promise<any> {
     try {
       const response: AxiosResponse<any> = await axios.put(
         `https://${apiConfig.host}:${apiConfig.port}/api/badges/${badgeId}`,
@@ -87,7 +87,7 @@ export class BadgeService {
     }
   }
 
-  async deleteBadge (badgeId: string): Promise<void> {
+  async deleteBadge(badgeId: string): Promise<void> {
     try {
       await axios.delete(`https://${apiConfig.host}:${apiConfig.port}/api/badges/${badgeId}`, {
         headers: this.getHeaders()
@@ -98,7 +98,7 @@ export class BadgeService {
     }
   }
 
-  async deleteAllBadges (): Promise<void> {
+  async deleteAllBadges(): Promise<void> {
     try {
       await axios.delete(`https://${apiConfig.host}:${apiConfig.port}/api/badges`, {
         headers: this.getHeaders()
